@@ -8,6 +8,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.settings import api_settings
 
 from user.serializers import UserSerializer, AuthTokenSerializer
+from .permissions import IsCreationOrIsAuthenticated
 
 
 class CreateUserView(generics.CreateAPIView):
@@ -19,20 +20,6 @@ class CreateTokenView(ObtainAuthToken):
     """Create a new auth token for user."""
     serializer_class = AuthTokenSerializer
     renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
-
-
-class IsCreationOrIsAuthenticated(permissions.BasePermission):
-
-    def has_object_permission(self, request, view, object):
-
-        if not request.user.is_authenticated():
-            print(request.user.is_authenticated(), 'não ta autenticado')
-            if view.action == 'create':
-                return True
-            else:
-                return False
-        else:
-            return True
 
 
 class ManagerUserView(generics.RetrieveUpdateAPIView):
