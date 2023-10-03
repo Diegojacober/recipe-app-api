@@ -16,7 +16,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     """View for manage recipe APIs."""
     serializer_class = serializers.RecipeSerializer
     queryset = Recipe.objects.all()
-    authentication_classes = [TokenAuthentication, authenticationJWT.JWTAuthentication]
+    authentication_classes = [TokenAuthentication,
+                              authenticationJWT.JWTAuthentication]
     permission_classes = [IsCreationOrIsAuthenticated,
                           IsAuthenticated]
 
