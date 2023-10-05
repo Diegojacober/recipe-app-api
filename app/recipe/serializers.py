@@ -18,10 +18,25 @@ class TagSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipes."""
     tags = TagSerializer(many=True, required=False)
+    # tags_links = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name='recipe:tag-detail',
+    #     source='tags'
+    #     # required=False
+    # )
+
+    # com hateoas
+    # tags = serializers.HyperlinkedRelatedField(
+    #    many=True,
+    #    read_only=True,
+    #    view_name='recipe:tag-detail'
+    # )
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'time_minutes', 'price', 'link', 'tags']
+        fields = ['id', 'title', 'time_minutes',
+                  'price', 'link', 'tags']
         read_only_fields = ['id']
 
     def _get_or_create_tags(self, tags, recipe):
