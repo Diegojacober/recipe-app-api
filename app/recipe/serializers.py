@@ -3,7 +3,7 @@ Serializer for recipe APIs
 """
 from rest_framework import serializers
 
-from core.models import Recipe, Tag
+from core.models import Recipe, Tag, Ingredient
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -15,9 +15,19 @@ class TagSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
 
+class IngredientSerializer(serializers.ModelSerializer):
+    """Serializer for ingredients."""
+
+    class Meta:
+        model = Ingredient
+        fields = ['id', 'name']
+        read_only_fields = ['id']
+
+
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipes."""
     tags = TagSerializer(many=True, required=False)
+    ingredients = IngredientSerializer(many=True, required=False)
     # tags_links = serializers.HyperlinkedRelatedField(
     #     many=True,
     #     read_only=True,
@@ -31,6 +41,11 @@ class RecipeSerializer(serializers.ModelSerializer):
     #    many=True,
     #    read_only=True,
     #    view_name='recipe:tag-detail'
+    # )
+    # ingredients = serializers.HyperlinkedRelatedField(
+    #    many=True,
+    #    read_only=True,
+    #    view_name='recipe:ingredient-detail'
     # )
 
     class Meta:
