@@ -396,13 +396,13 @@ class PrivateRecipeApiTests(TestCase):
         """Test filtering recipes by tags."""
         r1 = create_recipe(user=self.user, title='Thai Vegetable Curry')
         r2 = create_recipe(user=self.user, title='Aubergine with Tahini')
-        tag1 = Tag.objects.create(user=self.user, name="Vegan")
-        tag2 = Tag.objects.create(user=self.user, name="Vegetarian")
+        tag1 = Tag.objects.create(user=self.user, name='Vegan')
+        tag2 = Tag.objects.create(user=self.user, name='Vegetarian')
         r1.tags.add(tag1)
         r2.tags.add(tag2)
-        r3 = create_recipe(user=self.user, title='Fish and chips.')
+        r3 = create_recipe(user=self.user, title='Fish and chips')
 
-        params = {'tags': f'{tag1.id}, {tag2.id}'}
+        params = {'tags': f'{tag1.id},{tag2.id}'}
         res = self.client.get(RECIPES_URL, params)
 
         s1 = RecipeSerializer(r1)
@@ -413,7 +413,7 @@ class PrivateRecipeApiTests(TestCase):
         self.assertNotIn(s3.data, res.data)
 
     def test_filter_by_ingredients(self):
-        """Test filtering recipe by ingredients."""
+        """Test filtering recipes by ingredients."""
         r1 = create_recipe(user=self.user, title='Posh Beans on Toast')
         r2 = create_recipe(user=self.user, title='Chicken Cacciatore')
         in1 = Ingredient.objects.create(user=self.user, name='Feta Cheese')
@@ -422,8 +422,9 @@ class PrivateRecipeApiTests(TestCase):
         r2.ingredients.add(in2)
         r3 = create_recipe(user=self.user, title='Red Lentil Daal')
 
-        params = {'ingredients': f'{in1.id}, {in2.id}'}
+        params = {'ingredients': f'{in1.id},{in2.id}'}
         res = self.client.get(RECIPES_URL, params)
+
         s1 = RecipeSerializer(r1)
         s2 = RecipeSerializer(r2)
         s3 = RecipeSerializer(r3)
